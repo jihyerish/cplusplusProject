@@ -1,0 +1,76 @@
+Permanent 와 Temporary class를 구현하시오.
+Permanent 와 Temporary 는 Employee class를 상속 받는다.
+Permanent 은 경우 일정한 salary를 급여로 받고 생성자를 통해 급여와 이름을 입력 받는다.
+Temporary 급무 시간당 급여를 받고 생성자를 통해 근무 시간, 시급, 이름을 입력 받는다.
+Permanent 와 Temporary class는 Employee로 부터 상속 받은 info() 함수를 통해서
+자신의 이름과 급여 정보를 출력한다.
+
+#include <iostream>
+#include <vector>
+
+class Employee
+{
+public:
+    std::string getName()
+    {
+        return m_name;
+    }
+    
+    void setName(std::string name)
+    {
+        m_name = name;
+    }
+    virtual void info() = 0;
+
+private:
+    std::string m_name;
+};
+
+class Permanent : public Employee
+{
+public:
+    Permanent(std::string name, std::size_t salary) : m_salary(salary)
+    {
+        this->setName(name);
+    }
+    
+    void info()
+    {
+        std::cout << "이름 :" << this->getName() << "급여 :" << m_salary << std::endl;
+    }
+private:
+    size_t m_salary;
+    
+};
+
+class Temporary : public Employee
+{
+public:
+    Temporary(std::string name, std::size_t time, std::size_t pay) : m_time(time), m_pay(pay)
+    {
+        this->setName(name);
+    }
+
+    void info()
+    {
+        std::cout << "이름 :" << this->getName() << "급여 :" << m_pay * m_time << std::endl;
+    }
+
+private:
+    size_t m_time;
+    size_t m_pay;
+};
+
+int main()
+{
+    std::vector<Employee*> employees;
+    employees.push_back(new Permanent {"홍길동", 10000});
+    employees.push_back(new Temporary {"이길동", 10, 2000});
+
+    for(auto it = employees.begin(); it != employees.end(); it++)
+    {
+        (*it)->info();
+    }
+    
+    return 0;
+}
